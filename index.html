@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANEI ENGLISH - Loyalty & Bookings</title>
+    <title>Loyalty Card</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #f7f5f0;
-            --card-bg: #ffffff;
-            --accent-color: #8b5e3c;
-            --accent-hover: #6f472c;
-            --text-color: #2c2c2c;
-            --gray-light: #f0ebe1;
-            --gray-text: #7a7a7a;
-            --border-radius: 16px;
+            --pink-bg: #f3a8bf;
+            --pink-light: #fcd5e0;
+            --pink-btn: #eb87a2;
+            --green-card: #0d2818;
+            --dark-form: #1e2d24;
+            --input-bg: #142018;
+            --text-light: #ffffff;
+            --text-dark: #000000;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #050b07;
+            color: var(--text-light);
             margin: 0;
-            padding: 20px 12px;
+            padding: 16px 12px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -30,161 +30,230 @@
             box-sizing: border-box;
         }
 
-        .app-container {
+        .container {
             width: 100%;
-            max-width: 480px;
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            padding: 24px 20px;
-            box-sizing: border-box;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
-        .header {
+        /* 1. РОЖЕВА СКЕТЧ-КАРТА */
+        .pink-card {
+            background-color: var(--pink-bg);
+            border-radius: 20px;
+            padding: 20px 16px;
             text-align: center;
-            margin-bottom: 24px;
+            color: var(--text-dark);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .header h1 {
-            font-size: 22px;
-            margin: 0;
-            color: var(--accent-color);
-            letter-spacing: 1px;
+        .pink-card h1 {
+            font-size: 20px;
+            margin: 0 0 6px 0;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
 
-        .header p {
-            font-size: 13px;
-            color: var(--gray-text);
-            margin-top: 4px;
-        }
-
-        .sketch-card {
-            background-color: var(--gray-light);
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-
-        .sketch-card h2 {
-            font-size: 15px;
-            margin: 0 0 14px 0;
-            color: var(--text-color);
+        .pink-card .subtitle {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            line-height: 1.3;
         }
 
         .stamps-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            padding: 0 8px;
         }
 
-        .stamp-slot {
+        .stamp-circle {
             aspect-ratio: 1;
-            background-color: #fff;
-            border: 2px dashed #d1c7b7;
+            border: 2px dashed #d1758f;
             border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: var(--gray-text);
             font-size: 14px;
-            transition: all 0.3s ease;
+            font-weight: bold;
+            color: #8c3b52;
+            transition: all 0.2s;
         }
 
-        .stamp-slot.active {
-            border: 2px solid var(--accent-color);
-            background-color: var(--accent-color);
+        .stamp-circle.active {
+            border: 2px solid #8c3b52;
+            background-color: #8c3b52;
             color: #fff;
         }
 
-        .stamp-slot.free-slot {
-            border-color: #d4af37;
-            color: #d4af37;
+        .stamp-circle.free {
+            border: 2px solid #e2587b;
+            color: #e2587b;
             font-size: 11px;
+            background-color: #fce8ef;
         }
 
-        .booking-section h3 {
-            font-size: 16px;
+        .pink-badge {
+            background-color: var(--pink-light);
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+            color: var(--text-dark);
+        }
+
+        /* 2. ТЕМНО-ЗЕЛЕНА КАРТКА КОНТАКТІВ */
+        .green-card {
+            background-color: var(--green-card);
+            border-radius: 20px;
+            padding: 20px 16px;
+            color: #e0e0e0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .green-card h2 {
+            text-align: center;
+            font-size: 18px;
             margin: 0 0 16px 0;
-            color: var(--text-color);
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 12px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #a0b0a5;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #ffffff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* 3. ФОРМА БРОНЮВАННЯ */
+        .form-card {
+            background-color: var(--dark-form);
+            border-radius: 20px;
+            padding: 20px 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-card h3 {
+            font-size: 14px;
+            margin: 0 0 14px 0;
+            color: #ffffff;
+            font-weight: 600;
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
-        label {
+        .form-group label {
             display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--text-color);
+            font-size: 11px;
+            color: #a0b0a5;
+            margin-bottom: 4px;
         }
 
-        select, input {
+        input, select {
             width: 100%;
-            padding: 12px 14px;
-            border: 1px solid #e0d8cc;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            font-size: 14px;
-            background-color: #faf8f5;
+            background-color: var(--input-bg);
+            color: #ffffff;
+            font-size: 13px;
             box-sizing: border-box;
             outline: none;
-            transition: border-color 0.2s;
         }
 
-        select:focus, input:focus {
-            border-color: var(--accent-color);
-            background-color: #fff;
+        select option {
+            background-color: #142018;
+            color: #ffffff;
         }
 
-        .btn-submit {
+        .btn-pink {
             width: 100%;
             padding: 14px;
-            background-color: var(--accent-color);
-            color: white;
+            background-color: var(--pink-btn);
+            color: #000000;
             border: none;
             border-radius: 10px;
-            font-size: 15px;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s;
             margin-top: 8px;
+            transition: opacity 0.2s;
         }
 
-        .btn-submit:hover {
-            background-color: var(--accent-hover);
+        .btn-pink:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="header">
+<div class="container">
+    <!-- 1. Рожева скетч-карта -->
+    <div class="pink-card">
         <h1>ANEI ENGLISH</h1>
-        <p>Персональна картка лояльності та бронювання</p>
-    </div>
-
-    <!-- Скетч-карта зі штампами -->
-    <div class="sketch-card">
-        <h2>Ваша картка лояльності (7+1 FREE)</h2>
+        <div class="subtitle">Беручи участь у 7 розсилках, отримуйте 8-му<br>БЕЗКОШТОВНО!</div>
+        
         <div class="stamps-grid" id="stampsGrid"></div>
-        <p style="font-size: 11px; color: #666; margin: 0;">7 оплачених розсилок = 8-ма в подарунок!</p>
+        
+        <div class="pink-badge">Зберіть 7 штампів — 8-ма розсилка за наш рахунок!</div>
     </div>
 
-    <!-- Бронювання -->
-    <div class="booking-section">
-        <h3>Забронювати тему на розсилку</h3>
+    <!-- 2. Темно-зелені контакти -->
+    <div class="green-card">
+        <h2>ANEI ENGLISH</h2>
+        <div class="info-row">
+            <span class="info-label">Адмін / Зв'язок:</span>
+            <a href="https://t.me/AnHrok" class="info-value">@AnHrok</a>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Канал:</span>
+            <a href="https://t.me/anei_english" class="info-value">@anei_english</a>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Відгуки:</span>
+            <a href="https://t.me/anei_english_lessondelivery" class="info-value">@anei_english_lessondelivery</a>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Бот:</span>
+            <a href="https://t.me/AneiEnglishbot" class="info-value">@AneiEnglishbot</a>
+        </div>
+    </div>
+
+    <!-- 3. Форма бронювання -->
+    <div class="form-card">
+        <h3>Забронювати участь у розсилці</h3>
         
         <div class="form-group">
-            <label for="channelInput">Ваш Telegram-канал або Юзернейм:</label>
-            <input type="text" id="channelInput" placeholder="@my_channel_name" required>
+            <input type="text" id="channelInput" placeholder="Тема вашого блогу / поста..." required>
         </div>
 
         <div class="form-group">
-            <label for="bundleSelect">Оберіть розсилку:</label>
+            <label for="bundleSelect">Найближча розсилка</label>
             <select id="bundleSelect" onchange="updateTopics()">
                 <option value="">-- Оберіть розсилку --</option>
                 <option value="AUTUMN MOVIES & SERIES">🎬 AUTUMN MOVIES & SERIES (25.10–31.10) — 60 грн</option>
@@ -193,17 +262,22 @@
         </div>
 
         <div class="form-group">
-            <label for="topicSelect">Оберіть вільну тему:</label>
+            <label for="topicSelect">Вільні теми</label>
             <select id="topicSelect">
                 <option value="">-- Спочатку оберіть розсилку --</option>
             </select>
         </div>
 
-        <button class="btn-submit" onclick="submitBooking()">Забронювати тему</button>
+        <button class="btn-pink" onclick="submitBooking()">Забронювати слот</button>
     </div>
 </div>
 
 <script>
+    const tg = window.Telegram.WebApp;
+    if (tg) {
+        tg.expand();
+    }
+
     const topicsData = {
         "AUTUMN MOVIES & SERIES": [
             "🍂 Gilmore Girls",
@@ -251,20 +325,19 @@
         });
     }
 
-    // Примусовий рендер штампів (без збоїв)
     function renderStamps(count = 0) {
         const grid = document.getElementById("stampsGrid");
         if (!grid) return;
         grid.innerHTML = "";
         for (let i = 1; i <= 8; i++) {
             const slot = document.createElement("div");
-            slot.className = "stamp-slot";
+            slot.className = "stamp-circle";
             if (i <= count) slot.classList.add("active");
             if (i === 8) {
-                slot.classList.add("free-slot");
+                slot.classList.add("free");
                 slot.textContent = "FREE";
             } else {
-                slot.textContent = i <= count ? "✓" : i;
+                slot.textContent = i <= count ? "✓" : "";
             }
             grid.appendChild(slot);
         }
@@ -290,16 +363,12 @@
         if (window.Telegram && window.Telegram.WebApp) {
             window.Telegram.WebApp.sendData(JSON.stringify(dataToSend));
         } else {
-            alert("Бронювання успішне (тестовий режим)!");
+            alert("Тест: Бронювання надіслано!");
         }
     }
 
-    // Запускаємо відрісовку штампів одразу при завантаженні
     document.addEventListener("DOMContentLoaded", function() {
         renderStamps(0);
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.expand();
-        }
     });
 </script>
 
