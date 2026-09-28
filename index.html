@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loyalty Card</title>
+    <title>Loyalty Card & Booking</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Firebase SDK (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <style>
         :root {
             --pink-bg: #f3a8bf;
@@ -38,7 +43,6 @@
             gap: 16px;
         }
 
-        /* 1. РОЖЕВА СКЕТЧ-КАРТА */
         .pink-card {
             background-color: var(--pink-bg);
             border-radius: 20px;
@@ -81,7 +85,6 @@
             font-size: 14px;
             font-weight: bold;
             color: #8c3b52;
-            transition: all 0.2s;
         }
 
         .stamp-circle.active {
@@ -107,7 +110,6 @@
             color: var(--text-dark);
         }
 
-        /* 2. ТЕМНО-ЗЕЛЕНА КАРТКА КОНТАКТІВ */
         .green-card {
             background-color: var(--green-card);
             border-radius: 20px;
@@ -148,7 +150,6 @@
             text-decoration: none;
         }
 
-        /* 3. ФОРМА БРОНЮВАННЯ */
         .form-card {
             background-color: var(--dark-form);
             border-radius: 20px;
@@ -211,45 +212,40 @@
     </style>
 </head>
 <body>
-
 <div class="container">
-    <!-- 1. Рожева скетч-карта -->
     <div class="pink-card">
         <h1>ANEI ENGLISH</h1>
         <div class="subtitle">Беручи участь у 7 розсилках, отримуйте 8-му<br>БЕЗКОШТОВНО!</div>
-        
         <div class="stamps-grid" id="stampsGrid"></div>
-        
         <div class="pink-badge">Зберіть 7 штампів — 8-ма розсилка за наш рахунок!</div>
     </div>
 
-    <!-- 2. Темно-зелені контакти -->
     <div class="green-card">
         <h2>ANEI ENGLISH</h2>
         <div class="info-row">
             <span class="info-label">Адмін / Зв'язок:</span>
-            <a href="https://t.me/AnHrok" class="info-value">@AnHrok</a>
+            <a href="https://t.me/AnHrok" target="_blank" class="info-value">@AnHrok</a>
         </div>
         <div class="info-row">
             <span class="info-label">Канал:</span>
-            <a href="https://t.me/anei_english" class="info-value">@anei_english</a>
+            <a href="https://t.me/anei_english" target="_blank" class="info-value">@anei_english</a>
         </div>
         <div class="info-row">
             <span class="info-label">Відгуки:</span>
-            <a href="https://t.me/anei_english_lessondelivery" class="info-value">@anei_english_lessondelivery</a>
+            <a href="https://t.me/anei_english_lessondelivery" target="_blank" class="info-value">@anei_english_lessondelivery</a>
         </div>
         <div class="info-row">
             <span class="info-label">Бот:</span>
-            <a href="https://t.me/AneiEnglishbot" class="info-value">@AneiEnglishbot</a>
+            <a href="https://t.me/AneiEnglishbot" target="_blank" class="info-value">@AneiEnglishbot</a>
         </div>
     </div>
 
-    <!-- 3. Форма бронювання -->
     <div class="form-card">
         <h3>Забронювати участь у розсилці</h3>
         
         <div class="form-group">
-            <input type="text" id="channelInput" placeholder="Тема вашого блогу / поста..." required>
+            <label for="channelInput">Посилання на ваш канал / блог</label>
+            <input type="text" id="channelInput" placeholder="https://t.me/your_channel або @your_channel" required>
         </div>
 
         <div class="form-group">
@@ -257,7 +253,7 @@
             <select id="bundleSelect" onchange="updateTopics()">
                 <option value="">-- Оберіть розсилку --</option>
                 <option value="AUTUMN MOVIES & SERIES">🎬 AUTUMN MOVIES & SERIES (25.10–31.10) — 60 грн</option>
-                <option value="MAIN CHARACTER ENERGY">💋 MAIN CHARACTER ENERGY (19–23.10) — 40/55 грн</option>
+                <option value="MAIN CHARACTER ENERGY">💋 MAIN CHARACTER ENERGY (19–23.10) — 40 грн</option>
             </select>
         </div>
 
@@ -268,56 +264,73 @@
             </select>
         </div>
 
-        <button class="btn-pink" onclick="submitBooking()">Забронювати слот</button>
+        <button class="btn-pink" onclick="processBooking()">Оплатити та забронювати</button>
     </div>
 </div>
 
 <script>
-    const tg = window.Telegram.WebApp;
-    if (tg) {
-        tg.expand();
-    }
+    // ВАШІ КЛЮЧІ FIREBASE
+    const firebaseConfig = {
+        apiKey: "AIzaSyBY1zvXD7BxgzAcwZMJ13niqNRAC9UKE_Q",
+        authDomain: "aneienglishloyaltyproject.firebaseapp.com",
+        databaseURL: "https://aneienglishloyaltyproject-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "aneienglishloyaltyproject",
+        storageBucket: "aneienglishloyaltyproject.firebasestorage.app",
+        messagingSenderId: "689223712800",
+        appId: "1:689223712800:web:ff4d0271436d6c8b3fc45"
+    };
 
-    const topicsData = {
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // ПОСИЛАННЯ НА ВАШУ МОНОБАНКУ
+    const MONOBANK_LINK = "https://send.monobank.ua/jar/3NdgaE1Lzq";
+
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+
+    const ALL_TOPICS = {
         "AUTUMN MOVIES & SERIES": [
-            "🍂 Gilmore Girls",
-            "🎀 Gossip Girl",
-            "🍎 Twilight",
-            "🪄 Harry Potter",
-            "📖 Dead Poets Society",
-            "👠 The Devil Wears Prada",
-            "🔎 Knives Out",
-            "👒 Anne with an E",
-            "🍁 When Harry Met Sally",
-            "✂️ Edward Scissorhands",
-            "📚 Little Women",
-            "✨ Запропонувати власну тему"
+            "🍂 Gilmore Girls", "🎀 Gossip Girl", "🍎 Twilight", "🪄 Harry Potter",
+            "☂️ Wednesday", "🩸 The Vampire Diaries", "🛋 Friends", "📖 Dead Poets Society",
+            "👠 The Devil Wears Prada", "🔎 Knives Out", "👒 Anne with an E", "🕯 Practical Magic",
+            "🍁 When Harry Met Sally", "🔘 Coraline", "🕵️ Sherlock Holmes", "✂️ Edward Scissorhands",
+            "📚 Little Women", "✨ Запропонувати власну тему"
         ],
         "MAIN CHARACTER ENERGY": [
-            "Main Character Syndrome",
-            "Romanticize Your Life / Romantiser sa vie",
-            "That Girl Era",
-            "Confidence Without the Cringe / Confiance en soi",
-            "Friendship Breakups",
-            "Social Media vs Real Life",
-            "Reinventing Yourself",
-            "L’amour à la française",
-            "La vie parisienne",
-            "✨ Запропонувати власну тему"
+            "💋 Main Character Syndrome", "✨ Romanticize Your Life / Romantiser sa vie",
+            "🚩 Red & Green Flags", "💅 That Girl Era", "👑 Confidence Without the Cringe / Confiance en soi",
+            "💔 Friendship Breakups", "📱 Social Media vs Real Life", "🌱 Reinventing Yourself",
+            "💌 L’amour à la française", "🗼 La vie parisienne", "✨ Запропонувати власну тему"
         ]
     };
+
+    let takenTopics = [];
+
+    // Автоматичне отримання зайнятих тем з бази у реальному часі
+    database.ref("taken_topics").on("value", (snapshot) => {
+        const data = snapshot.val();
+        takenTopics = data ? Object.values(data) : [];
+        updateTopics();
+    });
 
     function updateTopics() {
         const bundle = document.getElementById("bundleSelect").value;
         const topicSelect = document.getElementById("topicSelect");
         topicSelect.innerHTML = "";
 
-        if (!bundle || !topicsData[bundle]) {
+        if (!bundle || !ALL_TOPICS[bundle]) {
             topicSelect.innerHTML = '<option value="">-- Спочатку оберіть розсилку --</option>';
             return;
         }
 
-        topicsData[bundle].forEach(topic => {
+        const available = ALL_TOPICS[bundle].filter(t => !takenTopics.includes(t));
+
+        if (available.length === 0) {
+            topicSelect.innerHTML = '<option value="">-- Усі теми вже заброньовані --</option>';
+            return;
+        }
+
+        available.forEach(topic => {
             const opt = document.createElement("option");
             opt.value = topic;
             opt.textContent = topic;
@@ -343,14 +356,29 @@
         }
     }
 
-    function submitBooking() {
+    function loadUserStamps() {
+        if (tg && tg.CloudStorage) {
+            tg.CloudStorage.getItem("user_stamps", (err, value) => {
+                renderStamps(value ? parseInt(value) : 0);
+            });
+        } else {
+            renderStamps(0);
+        }
+    }
+
+    function processBooking() {
         const channel = document.getElementById("channelInput").value.trim();
         const bundle = document.getElementById("bundleSelect").value;
         const topic = document.getElementById("topicSelect").value;
 
         if (!channel || !bundle || !topic) {
-            alert("Будь ласка, заповніть усі поля!");
+            alert("Будь ласка, вкажіть посилання на канал та оберіть тему!");
             return;
+        }
+
+        // Автоматично викреслюємо тему для всіх користувачів
+        if (topic !== "✨ Запропонувати власну тему") {
+            database.ref("taken_topics").push(topic);
         }
 
         const dataToSend = {
@@ -360,17 +388,27 @@
             topic: topic
         };
 
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.sendData(JSON.stringify(dataToSend));
+        if (tg && tg.sendData) {
+            tg.sendData(JSON.stringify(dataToSend));
+        }
+
+        // Перенаправлення на Монобанку з коментарем
+        const comment = encodeURIComponent(`${channel} | ${topic}`);
+        const payUrl = `${MONOBANK_LINK}?text=${comment}`;
+
+        if (tg && tg.openLink) {
+            tg.openLink(payUrl);
         } else {
-            alert("Тест: Бронювання надіслано!");
+            window.location.href = payUrl;
         }
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        renderStamps(0);
+        if (tg) {
+            tg.expand();
+        }
+        loadUserStamps();
     });
 </script>
-
 </body>
 </html>
