@@ -43,6 +43,7 @@
             gap: 16px;
         }
 
+        /* Блок Картки Лояльності */
         .pink-card {
             background-color: var(--pink-bg);
             border-radius: 20px;
@@ -100,6 +101,40 @@
             background-color: #fce8ef;
         }
 
+        /* Скретч-картка (Ефект стирання пальцем) */
+        .scratch-container {
+            position: relative;
+            width: 100%;
+            height: 90px;
+            margin: 10px 0 16px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
+        }
+
+        .scratch-secret {
+            font-size: 14px;
+            font-weight: 700;
+            color: #8c3b52;
+            text-align: center;
+            padding: 10px;
+            user-select: none;
+        }
+
+        .scratch-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            touch-action: none;
+        }
+
         .pink-badge {
             background-color: var(--pink-light);
             border-radius: 20px;
@@ -110,6 +145,7 @@
             color: var(--text-dark);
         }
 
+        /* Зелений блок із посиланнями */
         .green-card {
             background-color: var(--green-card);
             border-radius: 20px;
@@ -150,6 +186,7 @@
             text-decoration: none;
         }
 
+        /* Форма бронювання */
         .form-card {
             background-color: var(--dark-form);
             border-radius: 20px;
@@ -216,7 +253,15 @@
     <div class="pink-card">
         <h1>ANEI ENGLISH</h1>
         <div class="subtitle">Беручи участь у 7 розсилках, отримуйте 8-му<br>БЕЗКОШТОВНО!</div>
+        
         <div class="stamps-grid" id="stampsGrid"></div>
+
+        <!-- Скретч-картка -->
+        <div class="scratch-container" id="scratchContainer">
+            <div class="scratch-secret">🎁 Ваш бонус: +1 Штамп у подарунок за активність!</div>
+            <canvas id="scratchCanvas" class="scratch-canvas"></canvas>
+        </div>
+
         <div class="pink-badge">Зберіть 7 штампів — 8-ма розсилка за наш рахунок!</div>
     </div>
 
@@ -264,7 +309,7 @@
             </select>
         </div>
 
-        <button class="btn-pink" onclick="processBooking()">Оплатити та забронювати</button>
+        <button class="btn-pink" onclick="processBooking()">Забронювати та сплатити</button>
     </div>
 </div>
 
@@ -283,8 +328,9 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    // ПОСИЛАННЯ НА ВАШУ МОНОБАНКУ
+    // ПОСИЛАННЯ НА ВАШУ МОНОБАНКУ ТА АДМІНА
     const MONOBANK_LINK = "https://send.monobank.ua/jar/3NdgaE1Lzq";
+    const ADMIN_TELEGRAM = "https://t.me/AnHrok";
 
     const tg = window.Telegram ? window.Telegram.WebApp : null;
 
@@ -306,7 +352,7 @@
 
     let takenTopics = [];
 
-    // Автоматичне отримання зайнятих тем з бази у реальному часі
+    // Отримання зайнятих тем у реальному часі
     database.ref("taken_topics").on("value", (snapshot) => {
         const data = snapshot.val();
         takenTopics = data ? Object.values(data) : [];
@@ -356,14 +402,48 @@
         }
     }
 
-    function loadUserStamps() {
-        if (tg && tg.CloudStorage) {
-            tg.CloudStorage.getItem("user_stamps", (err, value) => {
-                renderStamps(value ? parseInt(value) : 0);
-            });
-        } else {
-            renderStamps(0);
+    // Ініціалізація скретч-картки
+    function initScratchCard() {
+        const canvas = document.getElementById('scratchCanvas');
+        const container = document.getElementById('scratchContainer');
+        if (!canvas || !container) return;
+
+        const ctx = canvas.getContext('2d');
+        canvas.width = container.offsetWidth;
+        canvas.height = container.offsetHeight;
+
+        // Заповнення захисним рожево-сріблястим шаром
+        ctx.fillStyle = '#e8a3b8';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Додаємо текст підказки на покриття
+        ctx.fillStyle = '#5c2233';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('✨ Зітріть пальцем тут, щоб відкрити бонус! ✨', canvas.width / 2, canvas.height / 2 + 4);
+
+        let isDrawing = false;
+
+        function scratch(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 18, 0, Math.PI * 2, false);
+            ctx.fill();
         }
+
+        canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('mouseup', () => { isDrawing = false; });
+        canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+        canvas.addEventListener('touchmove', scratch);
+        canvas.addEventListener('touchend', () => { isDrawing = false; });
     }
 
     function processBooking() {
@@ -376,7 +456,7 @@
             return;
         }
 
-        // Автоматично викреслюємо тему для всіх користувачів
+        // Автоматично викреслюємо тему у Firebase
         if (topic !== "✨ Запропонувати власну тему") {
             database.ref("taken_topics").push(topic);
         }
@@ -392,7 +472,7 @@
             tg.sendData(JSON.stringify(dataToSend));
         }
 
-        // Перенаправлення на Монобанку з коментарем
+        // Формуємо посилання на Монобанку з коментарем
         const comment = encodeURIComponent(`${channel} | ${topic}`);
         const payUrl = `${MONOBANK_LINK}?text=${comment}`;
 
@@ -407,7 +487,8 @@
         if (tg) {
             tg.expand();
         }
-        loadUserStamps();
+        renderStamps(0);
+        setTimeout(initScratchCard, 200);
     });
 </script>
 </body>
