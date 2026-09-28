@@ -69,6 +69,7 @@
         .sketch-card h2 {
             font-size: 15px;
             margin: 0 0 14px 0;
+            color: var(--text-color);
         }
 
         .stamps-grid {
@@ -89,6 +90,7 @@
             font-weight: bold;
             color: var(--gray-text);
             font-size: 14px;
+            transition: all 0.3s ease;
         }
 
         .stamp-slot.active {
@@ -106,6 +108,7 @@
         .booking-section h3 {
             font-size: 16px;
             margin: 0 0 16px 0;
+            color: var(--text-color);
         }
 
         .form-group {
@@ -117,6 +120,7 @@
             font-size: 13px;
             font-weight: 600;
             margin-bottom: 6px;
+            color: var(--text-color);
         }
 
         select, input {
@@ -128,6 +132,7 @@
             background-color: #faf8f5;
             box-sizing: border-box;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         select:focus, input:focus {
@@ -145,6 +150,7 @@
             font-size: 15px;
             font-weight: bold;
             cursor: pointer;
+            transition: background-color 0.2s;
             margin-top: 8px;
         }
 
@@ -201,7 +207,6 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // Доступні вільні теми за вашими списками
     const topicsData = {
         "AUTUMN MOVIES & SERIES": [
             "🍂 Gilmore Girls",
@@ -249,7 +254,6 @@
         });
     }
 
-    // Рендер персональних штампів
     function renderStamps(count = 0) {
         const grid = document.getElementById("stampsGrid");
         grid.innerHTML = "";
@@ -267,7 +271,6 @@
         }
     }
 
-    // Завантаження штампів з персонального CloudStorage Telegram
     function loadUserStamps() {
         if (tg.CloudStorage) {
             tg.CloudStorage.getItem("user_stamps", (err, value) => {
