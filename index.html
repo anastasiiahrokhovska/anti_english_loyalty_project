@@ -167,7 +167,7 @@
         <p>Персональна картка лояльності та бронювання</p>
     </div>
 
-    <!-- Скетч-карта -->
+    <!-- Скетч-карта зі штампами -->
     <div class="sketch-card">
         <h2>Ваша картка лояльності (7+1 FREE)</h2>
         <div class="stamps-grid" id="stampsGrid"></div>
@@ -204,9 +204,6 @@
 </div>
 
 <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-
     const topicsData = {
         "AUTUMN MOVIES & SERIES": [
             "🍂 Gilmore Girls",
@@ -254,8 +251,10 @@
         });
     }
 
+    // Примусовий рендер штампів (без збоїв)
     function renderStamps(count = 0) {
         const grid = document.getElementById("stampsGrid");
+        if (!grid) return;
         grid.innerHTML = "";
         for (let i = 1; i <= 8; i++) {
             const slot = document.createElement("div");
@@ -268,17 +267,6 @@
                 slot.textContent = i <= count ? "✓" : i;
             }
             grid.appendChild(slot);
-        }
-    }
-
-    function loadUserStamps() {
-        if (tg.CloudStorage) {
-            tg.CloudStorage.getItem("user_stamps", (err, value) => {
-                const count = value ? parseInt(value) : 0;
-                renderStamps(count);
-            });
-        } else {
-            renderStamps(0);
         }
     }
 
@@ -299,10 +287,20 @@
             topic: topic
         };
 
-        tg.sendData(JSON.stringify(dataToSend));
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.sendData(JSON.stringify(dataToSend));
+        } else {
+            alert("Бронювання успішне (тестовий режим)!");
+        }
     }
 
-    loadUserStamps();
+    // Запускаємо відрісовку штампів одразу при завантаженні
+    document.addEventListener("DOMContentLoaded", function() {
+        renderStamps(0);
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.expand();
+        }
+    });
 </script>
 
 </body>
