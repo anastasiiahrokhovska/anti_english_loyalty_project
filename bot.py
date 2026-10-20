@@ -4,6 +4,7 @@ import logging
 import os
 import hashlib
 import secrets
+from urllib.parse import quote
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import CommandStart, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
@@ -14,6 +15,7 @@ from firebase_admin import credentials, auth as firebase_auth, db as firebase_db
 BOT_TOKEN = "ВАШ_ТЕЛЕГРАМ_БОТ_ТОКЕН"
 ADMIN_ID = 123456789  # Ваш особистий Telegram ID
 WEB_APP_URL = "https://your-domain.com/index.html"  # Посилання на ваш розміщений index.html
+MONOBANK_LINK = "https://send.monobank.ua/jar/3NdgaE1Lzq"
 FIREBASE_DATABASE_URL = os.getenv("FIREBASE_DATABASE_URL", "https://aneienglishloyaltyproject-default-rtdb.europe-west1.firebasedatabase.app")
 FIREBASE_SERVICE_ACCOUNT_JSON = os.getenv("FIREBASE_SERVICE_ACCOUNT_JSON")
 
@@ -151,10 +153,22 @@ async def handle_webapp_data(message: types.Message):
         await message.answer("Не вдалося надіслати заявку адміністраторці. Спробуйте пізніше.")
         return
 
-    await message.answer(
-        f"Заявку на тему «{topic}» для розсилки «{bundle}» надіслано адміністраторці. "
-        + ("Ви можете використати бонус 8-ї участі після підтвердження." if is_free else "Після підтвердження оплати вам зарахують штамп.")
-    )
+    if is_free:
+        await message.answer(
+            f"Заявку на безкоштовну 8-му участь з темою «{topic}» для розсилки «{bundle}» надіслано адміністраторці. "
+            "Бонус буде використано після підтвердження."
+        )
+    else:
+        payment_comment = quote(f"{profile['channel']} | {topic}")
+        payment_url = f"{MONOBANK_LINK}?text={payment_comment}"
+        payment_kb = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="💳 Перейти до оплати", url=payment_url)]
+        ])
+        await message.answer(
+            f"Заявку на тему «{topic}» для розсилки «{bundle}» надіслано адміністраторці. "
+            "Після оплати й підтвердження вам зарахують штамп.",
+            reply_markup=payment_kb
+        )
 
 # --- ПЕРСОНАЛЬНІ ШТАМПИ КАНАЛІВ (Firebase) ---
 @dp.callback_query(F.data.startswith("channel_add_"))
