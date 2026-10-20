@@ -395,6 +395,7 @@
                 return;
             }
             applyChannelProfile(profile, uid);
+            listenTakenTopics();
             profileListener = database.ref("channel_accounts/" + uid).on("value", (snap) => {
                 const updated = snap.val();
                 if (updated) applyChannelProfile(updated, uid);
@@ -412,7 +413,10 @@
     });
     document.getElementById("logoutButton").addEventListener("click", async () => {
         if (currentChannelUid && profileListener) database.ref("channel_accounts/" + currentChannelUid).off("value", profileListener);
-        profileListener = null; currentChannelUid = null; currentChannelProfile = null;
+        profileListener = null;
+        if (takenTopicsListener) database.ref("taken_topics").off("value", takenTopicsListener);
+        takenTopicsListener = null;
+        currentChannelUid = null; currentChannelProfile = null;
         await auth.signOut();
         document.getElementById("appContainer").classList.remove("authenticated");
         document.getElementById("loginCard").style.display = "block";
@@ -514,12 +518,17 @@
 
     let takenTopics = [];
 
-    // Отримання зайнятих тем у реальному часі
-    database.ref("taken_topics").on("value", (snapshot) => {
-        const data = snapshot.val();
-        takenTopics = data ? Object.values(data) : [];
-        updateTopics();
-    });
+    // Зайняті теми завантажуємо лише після входу, коли Firebase Auth вже активний.
+    let takenTopicsListener = null;
+    function listenTakenTopics() {
+        if (takenTopicsListener) database.ref("taken_topics").off("value", takenTopicsListener);
+        takenTopicsListener = (snapshot) => {
+            const data = snapshot.val();
+            takenTopics = data ? Object.values(data) : [];
+            updateTopics();
+        };
+        database.ref("taken_topics").on("value", takenTopicsListener);
+    }
 
     function updateTopics() {
         const bundle = document.getElementById("bundleSelect").value;
