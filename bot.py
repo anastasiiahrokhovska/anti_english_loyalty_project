@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import hashlib
+import secrets
 from aiogram import Bot, Dispatcher, F, types
 from aiogram.filters import CommandStart, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
@@ -105,11 +106,19 @@ async def handle_webapp_data(message: types.Message):
         await message.answer("На жаль, цю тему вже забронювали. Оновіть список тем і виберіть іншу.")
         return
     topic_key = hashlib.sha256(topic.encode("utf-8")).hexdigest()
-    reservation_ref = topics_ref.child(topic_key)
-    transaction_result = reservation_ref.transaction(lambda current: topic if current is None else current)
-    if transaction_result != topic:
+    booking_id = secrets.token_hex(12)
+    lock_ref = firebase_db.reference("topic_locks").child(topic_key)
+    lock_value = {
+        "bookingId": booking_id,
+        "channelUid": channel_uid,
+        "topic": topic,
+        "bundle": bundle
+    }
+    transaction_result = lock_ref.transaction(lambda current: lock_value if current is None else current)
+    if not transaction_result or transaction_result.get("bookingId") != booking_id:
         await message.answer("На жаль, цю тему щойно забронювали. Виберіть іншу.")
         return
+    topics_ref.child(topic_key).set(topic)
 
     stamps = int(profile.get("stamps", 0))
     is_free = stamps >= 7
@@ -137,7 +146,8 @@ async def handle_webapp_data(message: types.Message):
         await bot.send_message(ADMIN_ID, admin_msg, reply_markup=admin_kb)
     except Exception:
         logging.exception("Could not send booking to admin")
-        reservation_ref.delete()
+        topics_ref.child(topic_key).delete()
+        lock_ref.delete()
         await message.answer("Не вдалося надіслати заявку адміністраторці. Спробуйте пізніше.")
         return
 
