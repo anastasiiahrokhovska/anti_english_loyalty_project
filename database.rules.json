@@ -10,7 +10,11 @@
     },
     "taken_topics": {
       ".read": "auth != null",
-      ".write": "auth != null"
+      ".write": false
+    },
+    "topic_locks": {
+      ".read": false,
+      ".write": false
     }
   }
 }
