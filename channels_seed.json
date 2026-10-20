@@ -1,7 +1,7 @@
 {
-  "description": "Initial channel roster for ANEI ENGLISH loyalty cards. Import only after creating each account in Firebase Authentication and replacing channel keys with the corresponding Firebase Auth UID in Realtime Database.",
+  "description": "Initial channel roster for ANEI ENGLISH loyalty cards. Includes existing partners and @anei_english with 0 recorded participations. Accounts are not created until the setup script is run.",
   "checkedAt": "2026-10-20",
-  "channelCount": 38,
+  "channelCount": 39,
   "totalRecordedParticipations": 45,
   "accounts": [
     {
@@ -345,6 +345,15 @@
       "freeRewardsUsed": 0,
       "needsFirebaseUid": true,
       "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@anei_english",
+      "recordedParticipations": 0,
+      "stamps": 0,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "pending: replace password login with secure invitation-based onboarding"
     }
   ]
 }
