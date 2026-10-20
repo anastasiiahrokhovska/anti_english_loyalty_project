@@ -425,8 +425,15 @@
         if (!user || currentChannelUid) return;
         try {
             const snap = await database.ref("channel_accounts/" + user.uid).once("value");
-            if (snap.exists() && snap.val().channel) applyChannelProfile(snap.val(), user.uid);
-            else await auth.signOut();
+            if (snap.exists() && snap.val().channel) {
+                applyChannelProfile(snap.val(), user.uid);
+                listenTakenTopics();
+                if (!profileListener) {
+                    profileListener = database.ref("channel_accounts/" + user.uid).on("value", (profileSnap) => {
+                        if (profileSnap.exists()) applyChannelProfile(profileSnap.val(), user.uid);
+                    });
+                }
+            } else await auth.signOut();
         } catch (error) {
             showLoginError("Не вдалося завантажити кабінет. Перевірте налаштування доступу Firebase.");
             await auth.signOut();
