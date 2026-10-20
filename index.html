@@ -609,6 +609,10 @@
     }
 
     function processBooking() {
+        if (!currentChannelUid || !currentChannelProfile) {
+            alert("Спочатку увійдіть до особистого кабінету свого каналу.");
+            return;
+        }
         const channel = document.getElementById("channelInput").value.trim();
         const bundle = document.getElementById("bundleSelect").value;
         const topic = document.getElementById("topicSelect").value;
