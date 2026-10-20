@@ -59,13 +59,13 @@ async def handle_webapp_data(message: types.Message):
         status_text = "🎁 **БЕЗКОШТОВНА 8-ма розсилка!**" if is_free else "💳 Потрібна оплата"
 
         admin_msg = (
-            f"📥 **НОВЕ БРОНЮВАННЯ РОЗСИЛКИ!**\\n\\n"
-            f"👤 Учасник: @{user_info['username']} (ID: `{user_id}`)\\n"
-            f"📣 Розсилка: {bundle}\\n"
-            f"📌 Тема: {topic}\\n"
-            f"🔗 Канал: {channel}\\n"
-            f"📅 Дата: {date}\\n"
-            f"Статус: {status_text}\\n"
+            f"📥 **НОВЕ БРОНЮВАННЯ РОЗСИЛКИ!**\n\n"
+            f"👤 Учасник: @{user_info['username']} (ID: `{user_id}`)\n"
+            f"📣 Розсилка: {bundle}\n"
+            f"📌 Тема: {topic}\n"
+            f"🔗 Канал: {channel}\n"
+            f"📅 Дата: {date}\n"
+            f"Статус: {status_text}\n"
             f"Поточні штампи: {user_info['stamps']}/7"
         )
         
