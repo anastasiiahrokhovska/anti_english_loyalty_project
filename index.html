@@ -653,19 +653,9 @@
             topic: topic
         };
 
-        if (tg && tg.sendData) {
-            tg.sendData(JSON.stringify(dataToSend));
-        }
-
-        // Формуємо посилання на Монобанку з коментарем
-        const comment = encodeURIComponent(`${channel} | ${topic}`);
-        const payUrl = `${MONOBANK_LINK}?text=${comment}`;
-
-        if (tg && tg.openLink) {
-            tg.openLink(payUrl);
-        } else {
-            window.location.href = payUrl;
-        }
+        // sendData передає заявку боту й закриває Telegram WebApp.
+        // Оплату бот надсилає окремим повідомленням лише для платної участі.
+        tg.sendData(JSON.stringify(dataToSend));
     }
 
     document.addEventListener("DOMContentLoaded", function() {
