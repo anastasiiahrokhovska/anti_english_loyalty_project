@@ -624,7 +624,7 @@
         canvas.addEventListener('touchend', () => { isDrawing = false; });
     }
 
-    function processBooking() {
+    async function processBooking() {
         if (!currentChannelUid || !currentChannelProfile) {
             alert("Спочатку увійдіть до особистого кабінету свого каналу.");
             return;
@@ -638,19 +638,19 @@
             return;
         }
 
-        // Автоматично викреслюємо тему у Firebase
-        if (topic !== "✨ Запропонувати власну тему") {
-            database.ref("taken_topics").push(topic);
+        if (!tg || !tg.sendData || !auth.currentUser) {
+            alert("Для бронювання відкрийте кабінет через Telegram-бота та увійдіть у свій акаунт.");
+            return;
         }
 
+        const idToken = await auth.currentUser.getIdToken();
         const dataToSend = {
             action: "booking",
             channel: channel,
             channelUid: currentChannelUid,
+            idToken: idToken,
             bundle: bundle,
-            topic: topic,
-            stamps: Number(currentChannelProfile?.stamps || 0),
-            isFree: Number(currentChannelProfile?.stamps || 0) >= 7
+            topic: topic
         };
 
         if (tg && tg.sendData) {
