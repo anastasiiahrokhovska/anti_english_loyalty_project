@@ -71,8 +71,8 @@ def main():
         old_profile = profile_ref.get() or {}
         profile_ref.update({
             "channel": channel,
-            "stamps": stamps,
-            "recordedParticipations": participations,
+            "stamps": min(int(old_profile.get("stamps", stamps)), 7),
+            "recordedParticipations": int(old_profile.get("recordedParticipations", participations)),
             "freeRewardAvailable": stamps >= 7,
             "freeRewardsUsed": int(old_profile.get("freeRewardsUsed", 0)),
             "accountProvisioned": True,
