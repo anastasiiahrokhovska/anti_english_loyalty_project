@@ -1,0 +1,350 @@
+{
+  "description": "Initial channel roster for ANEI ENGLISH loyalty cards. Import only after creating each account in Firebase Authentication and replacing channel keys with the corresponding Firebase Auth UID in Realtime Database.",
+  "checkedAt": "2026-10-20",
+  "channelCount": 38,
+  "totalRecordedParticipations": 45,
+  "accounts": [
+    {
+      "channel": "@bysnihur",
+      "recordedParticipations": 2,
+      "stamps": 2,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@valeriiaenglishlab",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@Englishspacewithfox",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@anstsiia_eng",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@di_lingua4",
+      "recordedParticipations": 2,
+      "stamps": 2,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@okJust_Do_It",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@easyenglishbys_zakusilova",
+      "recordedParticipations": 2,
+      "stamps": 2,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@dora_deutsch",
+      "recordedParticipations": 2,
+      "stamps": 2,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@deutsch_Unterrichtsmaterial",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@mirodeutschvikki",
+      "recordedParticipations": 2,
+      "stamps": 2,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@lehrersinspiration",
+      "recordedParticipations": 2,
+      "stamps": 2,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@engtutorjulia",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@dar_english_spark",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@futurumMiro",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@tinaaateach",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@deutsch_inspirieren",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@tutorscorner",
+      "recordedParticipations": 2,
+      "stamps": 2,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@curiouscatenglish",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@bunnyland_english",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@elanguages",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@hahdeutsch",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@english_and_chill",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@languagerecipe",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@KatEnglish2626",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@muuuuusiaaa",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@easy_english_with",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@JengglishDeutsch",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@StepToFluencyy",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@olengua_english_spot",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@MarBle",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@nocap_english_studying",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@engxtutor",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@AmericanFlowClub",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@katerinka_eng",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@engspire_m",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@angliykathetutor",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@EnglishDiary_Angelina",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    },
+    {
+      "channel": "@speakeasyacadem",
+      "recordedParticipations": 1,
+      "stamps": 1,
+      "freeRewardAvailable": false,
+      "freeRewardsUsed": 0,
+      "needsFirebaseUid": true,
+      "passwordProvisioning": "create individually in Firebase Authentication; never store password in this file"
+    }
+  ]
+}
