@@ -69,11 +69,12 @@ def main():
 
         profile_ref = db.reference(f"channel_accounts/{user.uid}")
         old_profile = profile_ref.get() or {}
+        current_stamps = min(int(old_profile.get("stamps", stamps)), 7)
         profile_ref.update({
             "channel": channel,
-            "stamps": min(int(old_profile.get("stamps", stamps)), 7),
+            "stamps": current_stamps,
             "recordedParticipations": int(old_profile.get("recordedParticipations", participations)),
-            "freeRewardAvailable": stamps >= 7,
+            "freeRewardAvailable": current_stamps >= 7,
             "freeRewardsUsed": int(old_profile.get("freeRewardsUsed", 0)),
             "accountProvisioned": True,
         })
