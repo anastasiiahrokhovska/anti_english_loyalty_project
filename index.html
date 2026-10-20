@@ -297,8 +297,10 @@
             <label for="bundleSelect">Найближча розсилка</label>
             <select id="bundleSelect" onchange="updateTopics()">
                 <option value="">-- Оберіть розсилку --</option>
-                <option value="AUTUMN MOVIES & SERIES">🎬 AUTUMN MOVIES & SERIES (25.10–31.10) — 60 грн</option>
-                <option value="MAIN CHARACTER ENERGY">💋 MAIN CHARACTER ENERGY (19–23.10) — 40 грн</option>
+                <option value="STRANGE BUT TRUE">🔎 STRANGE BUT TRUE (2–8 листопада) 🇬🇧🇩🇪</option>
+                <option value="INTERNET BRAINROT">🧠 INTERNET BRAINROT (9–15 листопада)</option>
+                <option value="BLACK FRIDAY | WANT VS. NEED | SHOPAHOLISM">🛍️ BLACK FRIDAY | WANT VS. NEED | SHOPAHOLISM (16–22 листопада)</option>
+                <option value="CHRISTMAS MOVIE MARATHON">🎄 CHRISTMAS MOVIE MARATHON (30 листопада – 6 грудня) 🇬🇧🇩🇪</option>
             </select>
         </div>
 
@@ -335,18 +337,79 @@
     const tg = window.Telegram ? window.Telegram.WebApp : null;
 
     const ALL_TOPICS = {
-        "AUTUMN MOVIES & SERIES": [
-            "🍂 Gilmore Girls", "🎀 Gossip Girl", "🍎 Twilight", "🪄 Harry Potter",
-            "☂️ Wednesday", "🩸 The Vampire Diaries", "🛋 Friends", "📖 Dead Poets Society",
-            "👠 The Devil Wears Prada", "🔎 Knives Out", "👒 Anne with an E", "🕯 Practical Magic",
-            "🍁 When Harry Met Sally", "🔘 Coraline", "🕵️ Sherlock Holmes", "✂️ Edward Scissorhands",
-            "📚 Little Women", "✨ Запропонувати власну тему"
+        "STRANGE BUT TRUE": [
+            "🧠 Your Brain Is Playing Tricks on You / Dein Gehirn spielt dir Streiche — чому мозок нас обманює: оптичні ілюзії, пам’ять і дежавю.",
+            "🔍 Believe It or Not! / Kaum zu glauben! — неймовірні факти, які мають наукове пояснення.",
+            "⚖️ The World’s Most Unusual Laws / Die verrücktesten Gesetze der Welt — найдивніші закони різних країн.",
+            "🥱 Why Do We Do That? / Warum machen wir das eigentlich? — чому ми гикаємо, позіхаємо, бачимо сни та вкриваємося мурашками.",
+            "🐾 Animals with Superpowers / Tiere mit Superkräften — тварини з неймовірними здібностями.",
+            "👽 Things That Shouldn’t Exist (But Do!) / Dinge, die es eigentlich nicht geben dürfte — істоти, явища й речі, які здаються вигаданими.",
+            "🧩 The Truth About Popular Myths / Die Wahrheit über bekannte Mythen — що з популярних міфів правда, а що ні?",
+            "🌍 What If…? / Was wäre, wenn …? — незвичайні сценарії про Землю, гравітацію та людство.",
+            "🫀 Strange Facts About the Human Body / Unglaubliche Fakten über den menschlichen Körper — дивовижні особливості людського організму.",
+            "🚀 Space Facts That Sound Fake / Unglaubliche Fakten über das Weltall — неймовірні факти про космос і Всесвіт.",
+            "🍓 Amazing Facts About Food / Überraschende Fakten über Essen — цікаві факти про їжу, незвичайні смаки та харчові міфи.",
+            "🗺️ The World’s Weirdest Places / Die seltsamsten Orte der Welt — незвичайні місця та природні феномени.",
+            "🔬 Things You Didn’t Know About Everyday Life / Dinge, die du über den Alltag nicht wusstest — наукові факти про звичні речі.",
+            "🦸 Real-Life Superpowers / Echte Superkräfte — незвичайні здібності людей і можливості організму.",
+            "✨ Hard to Believe! / Kaum zu glauben! — дивні наукові відкриття, які змінюють погляд на світ.",
+            "💡 Запропонувати власну тему — авторська ідея в межах тематики Strange but True."
         ],
-        "MAIN CHARACTER ENERGY": [
-            "💋 Main Character Syndrome", "✨ Romanticize Your Life / Romantiser sa vie",
-            "🚩 Red & Green Flags", "💅 That Girl Era", "👑 Confidence Without the Cringe / Confiance en soi",
-            "💔 Friendship Breakups", "📱 Social Media vs Real Life", "🌱 Reinventing Yourself",
-            "💌 L’amour à la française", "🗼 La vie parisienne", "✨ Запропонувати власну тему"
+        "INTERNET BRAINROT": [
+            "🧠 Brainrot Is Real — Is the Internet Rotting Our Brains? — як короткі відео й нескінченний скролінг впливають на увагу та пам’ять.",
+            "💀 Chronically Online — Do You Need to Touch Grass? — інтернет-звички та різниця між життям онлайн і в реальності.",
+            "💅 The Lore Is Getting Out of Hand — як інтернет-персонажі та меми перетворюються на цілі всесвіти.",
+            "🗣️ What Does That Even Mean? — The Language of the Internet — сленг, скорочення та вирази сучасного інтернету.",
+            "🫠 POV: You Have No Idea What’s Going On — POV, меми та формати інтернет-гумору.",
+            "🐸 From Cringe to Iconic — чому одні речі стають крінжовими, а інші — культовими.",
+            "📱 The Algorithm Knows You Better Than You Do — як алгоритми вгадують наші інтереси й утримують увагу.",
+            "🎭 Main Character Syndrome — Is Your Life a Movie? — тренд на головного героя та життя заради красивого контенту.",
+            "🫢 Cancel Culture — One Post Away from Disaster — інтернет-скандали, публічні вибачення та культура відповідальності.",
+            "🤖 AI Slop & Digital Weirdness — контент, створений ШІ, фейкові відео та питання автентичності.",
+            "🧍 NPC Energy — Are We All Just Following a Script? — NPC-меми, соціальні ролі та страх бути як усі.",
+            "🦆 The Most Random Things That Went Viral — як безглузді відео, звуки й персонажі стають вірусними.",
+            "🕵️ The Internet Never Forgets — цифровий слід, старі пости та наслідки публікацій онлайн.",
+            "🧃 Delulu Is the Solulu? — чи допомагають фантазії досягати цілей, чи ми просто обманюємо себе.",
+            "🧩 Inside an Internet Rabbit Hole — як одне відео приводить до годин перегляду дивних тем.",
+            "🔥 Is It a Trend or Just Marketing? — як бренди, інфлюенсери та рекомендації створюють тренди.",
+            "✨ Запропонувати власну тему — авторська ідея в межах тематики Internet Brainrot."
+        ],
+        "BLACK FRIDAY | WANT VS. NEED | SHOPAHOLISM": [
+            "🛒 Add to Cart — Think Later — імпульсивні покупки та речі, які ми майже не використовуємо.",
+            "💳 Buy Now, Regret Later — почуття провини після покупок і рішення на емоціях.",
+            "🧠 Your Brain on Shopping — як мозок реагує на знижки, винагороди й вигідні пропозиції.",
+            "🏷️ Is It Really a Bargain? — фальшиві знижки та маркетингові прийоми.",
+            "💸 Want vs. Need — Can You Tell the Difference? — як відрізняти потреби від бажань.",
+            "🛍️ Retail Therapy — Shopping Your Feelings Away — покупки у відповідь на сум, нудьгу чи стрес.",
+            "👗 Closet Full of Clothes, Nothing to Wear — fast fashion, мікротренди та переповнені шафи.",
+            "🎯 You Don’t Need It — You’ve Been Influenced — як реклама й блогери створюють нові бажання.",
+            "⏳ Only 2 Left! — The Fear of Missing Out — штучний дефіцит і тиск термінових пропозицій.",
+            "📦 The Unboxing Trap — задоволення від розпакування та культура haul-відео.",
+            "🧾 Spend Less, Live More? — усвідомлене споживання та мінімалізм.",
+            "💰 Payday to Broke in Three Days — бюджетування та звички, через які гроші швидко зникають.",
+            "🪙 The Psychology of Free Stuff — чому нас приваблюють безкоштовні речі та бонуси.",
+            "🖤 Black Friday: Smart Shopping or Pure Chaos? — як планувати покупки й не витрачати зайвого.",
+            "✨ Luxury for Less — Is the Dupe Worth It? — аналоги дорогих брендів і те, за що ми насправді платимо.",
+            "🚫 No-Buy Challenge — Can You Stop Shopping? — челендж без необов’язкових покупок та усвідомлені витрати.",
+            "✨ Запропонувати власну тему — авторська ідея в межах тематики Black Friday / Want vs. Need / Shopaholism."
+        ],
+        "CHRISTMAS MOVIE MARATHON": [
+            "💚 The Grinch — From Grumpy to Grateful — шлях від роздратування до вдячності.",
+            "❤️ Love Actually — Love Is All Around — різні форми любові та людських стосунків.",
+            "❄️ The Holiday — A Fresh Start — нові початки, зміни й вихід із зони комфорту.",
+            "🎁 Klaus — The Power of Kindness — доброта, щедрість і сила маленьких вчинків.",
+            "🎃 The Nightmare Before Christmas — When Halloween Meets Christmas — зіткнення двох святкових світів.",
+            "👻 A Christmas Carol — Three Ghosts, One Life — минуле, теперішнє, майбутнє та особисті зміни.",
+            "🎅 Elf — Christmas, But Make It Chaotic — культурні відмінності й різдвяний хаос.",
+            "🚂 The Polar Express — Do You Still Believe? — віра, дорослішання та магія Різдва.",
+            "👑 The Princess Switch — Double the Trouble — двійники, таємниці й романтичні непорозуміння.",
+            "🕯 Happiest Season — The Holidays, Family & Identity — сімейні очікування, стосунки та ідентичність.",
+            "⚡ Harry Potter — A Very Magical Christmas — зимова магія, дружба та святкові традиції у світі чаклунів.",
+            "💌 Bridget Jones’s Diary — A Very British Christmas — британський гумор, стосунки та незручні святкові моменти.",
+            "🌍 How the Grinch Stole Christmas — Christmas Traditions Around the World — різдвяні традиції різних країн.",
+            "🎄 The Santa Clause — What If You Became Santa? — що було б, якби довелося стати Сантою?",
+            "✨ Last Christmas — Love, Loss & Second Chances — любов, втрата та другий шанс.",
+            "✨ Запропонувати власну тему — авторська ідея за мотивами різдвяного фільму."
         ]
     };
 
