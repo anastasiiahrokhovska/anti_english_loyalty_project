@@ -281,7 +281,7 @@
 
         <!-- Скретч-картка -->
         <div class="scratch-container" id="scratchContainer">
-            <div class="scratch-secret">🎁 Ваш бонус: +1 Штамп у подарунок за активність!</div>
+            <div class="scratch-secret" id="scratchSecret">Ваша персональна картка лояльності ANEI ENGLISH</div>
             <canvas id="scratchCanvas" class="scratch-canvas"></canvas>
         </div>
 
@@ -378,6 +378,10 @@
         document.querySelector(".pink-badge").textContent = Number(profile.stamps || 0) >= 7
             ? "Ваш бонус доступний: 8-ма розсилка безкоштовно!"
             : "Зберіть 7 штампів — 8-ма розсилка за наш рахунок!";
+        document.getElementById("scratchSecret").textContent = Number(profile.stamps || 0) >= 7
+            ? "🎁 Ваша 8-ма участь доступна безкоштовно після підтвердження"
+            : "У вас " + Number(profile.stamps || 0) + "/7 штампів. Збирайте штампи для бонусу!";
+        setTimeout(initScratchCard, 200);
     }
     document.getElementById("loginForm").addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -586,9 +590,11 @@
         const container = document.getElementById('scratchContainer');
         if (!canvas || !container) return;
 
+        if (canvas.dataset.initialized === "true" || container.offsetWidth === 0) return;
         const ctx = canvas.getContext('2d');
         canvas.width = container.offsetWidth;
         canvas.height = container.offsetHeight;
+        canvas.dataset.initialized = "true";
 
         // Заповнення захисним рожево-сріблястим шаром
         ctx.fillStyle = '#e8a3b8';
@@ -662,7 +668,6 @@
         if (tg) {
             tg.expand();
         }
-        setTimeout(initScratchCard, 200);
     });
 </script>
 </body>
