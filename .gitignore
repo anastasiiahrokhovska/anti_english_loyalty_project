@@ -1,0 +1,7 @@
+.env
+*.service-account.json
+serviceAccountKey.json
+ANEI_channel_credentials_*.csv
+channel_credentials.csv
+__pycache__/
+*.py[cod]
