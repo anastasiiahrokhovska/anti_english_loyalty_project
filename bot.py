@@ -125,12 +125,12 @@ async def handle_webapp_data(message: types.Message):
     user_info = message.from_user.username or message.from_user.first_name or str(message.from_user.id)
     status_text = "🎁 БЕЗКОШТОВНА 8-ма участь — очікує підтвердження" if is_free else "💳 Очікує оплати"
     admin_msg = (
-        "📥 НОВЕ БРОНЮВАННЯ РОЗСИЛКИ!\\n\\n"
-        f"👤 Telegram: @{user_info} (ID: {message.from_user.id})\\n"
-        f"📣 Розсилка: {bundle}\\n"
-        f"📌 Тема: {topic}\\n"
-        f"🔗 Канал: {profile['channel']}\\n"
-        f"Статус: {status_text}\\n"
+        "📥 НОВЕ БРОНЮВАННЯ РОЗСИЛКИ!\n\n"
+        f"👤 Telegram: @{user_info} (ID: {message.from_user.id})\n"
+        f"📣 Розсилка: {bundle}\n"
+        f"📌 Тема: {topic}\n"
+        f"🔗 Канал: {profile['channel']}\n"
+        f"Статус: {status_text}\n"
         f"Поточні штампи: {stamps}/7"
     )
     if is_free:
@@ -178,7 +178,7 @@ async def add_channel_stamp_handler(callback: types.CallbackQuery):
     stamps += 1
     ref.update({"stamps": stamps, "freeRewardAvailable": stamps >= 7})
     await callback.message.edit_text(
-        f"{callback.message.text}\\n\\nШтамп зараховано для {profile.get('channel', channel_uid)}. Баланс: {stamps}/7."
+        f"{callback.message.text}\n\nШтамп зараховано для {profile.get('channel', channel_uid)}. Баланс: {stamps}/7."
     )
     await callback.answer("Штамп зараховано")
 
@@ -202,7 +202,7 @@ async def use_channel_free_reward_handler(callback: types.CallbackQuery):
         "freeRewardsUsed": int(profile.get("freeRewardsUsed", 0)) + 1
     })
     await callback.message.edit_text(
-        f"{callback.message.text}\\n\\nБезкоштовну 8-му участь підтверджено для {profile.get('channel', channel_uid)}. Картку почато заново (0/7)."
+        f"{callback.message.text}\n\nБезкоштовну 8-му участь підтверджено для {profile.get('channel', channel_uid)}. Картку почато заново (0/7)."
     )
     await callback.answer("Бонус використано")
 
