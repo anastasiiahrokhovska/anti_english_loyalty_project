@@ -48,20 +48,24 @@ async def handle_webapp_data(message: types.Message):
     user_id = message.from_user.id
     data = json.loads(message.web_app_data.data)
 
-    if data.get("action") == "book_slot":
-        topic = data.get("topic")
-        date = data.get("date")
-        is_free = data.get("isFree")
+    if data.get("action") in {"book_slot", "booking"}:
+        topic = data.get("topic", "Не вказано")
+        date = data.get("date", "Не вказано")
+        bundle = data.get("bundle", "Не вказано")
+        channel = data.get("channel", "Не вказано")
+        is_free = data.get("isFree", False)
 
-        user_info = users_db.get(user_id, {"stamps": 0, "username": message.from_user.first_name})
+        user_info = users_db.get(user_id, {"stamps": 0, "username": message.from_user.username or message.from_user.first_name})
         status_text = "🎁 **БЕЗКОШТОВНА 8-ма розсилка!**" if is_free else "💳 Потрібна оплата"
 
         admin_msg = (
-            f"📥 **НОВЕ БРОНЮВАННЯ СОТА!**\n\n"
-            f"👤 Вчитель: @{user_info['username']} (ID: `{user_id}`)\n"
-            f"📌 Тема: {topic}\n"
-            f"📅 Дата: {date}\n"
-            f"Статус: {status_text}\n"
+            f"📥 **НОВЕ БРОНЮВАННЯ РОЗСИЛКИ!**\\n\\n"
+            f"👤 Учасник: @{user_info['username']} (ID: `{user_id}`)\\n"
+            f"📣 Розсилка: {bundle}\\n"
+            f"📌 Тема: {topic}\\n"
+            f"🔗 Канал: {channel}\\n"
+            f"📅 Дата: {date}\\n"
+            f"Статус: {status_text}\\n"
             f"Поточні штампи: {user_info['stamps']}/7"
         )
         
