@@ -18,33 +18,22 @@ dp = Dispatcher()
 
 # Accounts and Firebase are intentionally not used; loyalty cards are updated manually.
 
-# База даних у пам'яті (структура: { user_id: {"stamps": int, "username": str} })
-users_db = {}
+# Temporary chat list for broadcasts only; loyalty balances are handled manually.
+subscribers = set()
 
 # --- ОБРОБКА /start ---
 @dp.message(CommandStart())
 async def cmd_start(message: types.Message):
-    user_id = message.from_user.id
-    username = message.from_user.username or message.from_user.first_name
-
-    if user_id not in users_db:
-        users_db[user_id] = {"stamps": 0, "username": username}
-
-    stamps = users_db[user_id]["stamps"]
-    user_webapp_url = f"{WEB_APP_URL}?stamps={stamps}"
-
+    subscribers.add(message.from_user.id)
     kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🎴 Моя Скетч-Картка", web_app=WebAppInfo(url=user_webapp_url))],
-        [InlineKeyboardButton(text="💬 Зв'язок з Адміном", url="https://t.me/AnHrok")]
+        [InlineKeyboardButton(text="🎴 Скретч-картка та запис", web_app=WebAppInfo(url=WEB_APP_URL))],
+        [InlineKeyboardButton(text="💬 Зв'язок з адміністраторкою", url="https://t.me/AnHrok")]
     ])
-
     await message.answer(
-        f"Привіт, {username}! 👋\n\n"
-        f"Вітаємо у партнерській програмі розсилок **ANEI ENGLISH**.\n"
-        f"Ваш поточний баланс: **{stamps}/7** штампів.\n\n"
-        f"Натисніть кнопку нижче, щоб відкрити картку лояльності та забронювати слот!",
-        reply_markup=kb,
-        parse_mode="Markdown"
+        "Привіт! Вітаємо у партнерській програмі розсилок ANEI ENGLISH.\n\n"
+        "Відкрийте скретч-картку, оберіть розсилку й тему та надішліть заявку. "
+        "Після оплати адміністраторка вручну оновить картку й надішле її вам у директ.",
+        reply_markup=kb
     )
 
 # --- SIMPLE BOOKING: NO LOGIN OR ACCOUNT REQUIRED ---
@@ -106,12 +95,10 @@ async def cmd_broadcast(message: types.Message):
         return
 
     count = 0
-    for uid in users_db.keys():
+    for uid in subscribers:
         try:
-            user_stamps = users_db[uid]["stamps"]
-            user_webapp_url = f"{WEB_APP_URL}?stamps={user_stamps}"
             kb = InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="🎴 Забронювати слот", web_app=WebAppInfo(url=user_webapp_url))]
+                [InlineKeyboardButton(text="Скретч-картка та запис", web_app=WebAppInfo(url=WEB_APP_URL))]
             ])
             await bot.send_message(uid, text_to_send, reply_markup=kb)
             count += 1
